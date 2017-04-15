@@ -150,7 +150,6 @@ social_icons:
   Twitter: twitter
   Weibo: weibo
 
-
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
@@ -286,7 +285,7 @@ mathjax:
 
 
 # Swiftype Search API Key
-#swiftype_key:
+swiftype_key: vq_uAaHRW9DJs7Z9VD42
 
 # Baidu Analytics ID
 #baidu_analytics:
@@ -402,7 +401,7 @@ leancloud_visitors:
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
 busuanzi_count:
   # count values only if the other configs are false
-  enable: false
+  enable: true
   # custom uv span for the whole site
   site_uv: true
   site_uv_header: <i class="fa fa-user"></i>
@@ -414,7 +413,7 @@ busuanzi_count:
   # custom pv span for one page only
   page_pv: true
   page_pv_header: <i class="fa fa-file-o"></i>
-  page_pv_footer:
+  page_pv_footer: times
 
 
 # Tencent analytics ID
