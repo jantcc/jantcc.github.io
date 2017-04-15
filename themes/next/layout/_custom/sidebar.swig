@@ -1,6 +1,6 @@
 <script type="text/javascript">
 var thisURL = document.URL;
-if(thisURL== "http://localhost:4000/about/"){
+if(thisURL== "http://jantc.cn/about/"){
 var z1 = document.getElementsByClassName("content-wrap")[0];
 var div = document.createElement("div");
 div.setAttribute("id", "newDiv1");
