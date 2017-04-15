@@ -81,7 +81,33 @@
   {% if theme.canvas_nest %}
 
 																										
-<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script type="text/javascript">
+	if(!detectmob()){
+		loadJs("//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js");
+	}
+	function detectmob() {  
+                if( navigator.userAgent.match(/Android/i)  
+                || navigator.userAgent.match(/webOS/i)  
+                || navigator.userAgent.match(/iPhone/i)  
+                || navigator.userAgent.match(/iPad/i)  
+                || navigator.userAgent.match(/iPod/i)  
+                || navigator.userAgent.match(/BlackBerry/i)  
+                || navigator.userAgent.match(/Windows Phone/i)  
+                ){  
+                    return true;  
+                }  
+                else {  
+                    return false;  
+                }  
+            }  
+	function loadJs(src) {
+	var script = document.createElement('script');
+	script.type="text/javascript";
+	script.language = 'javascript';
+	script.src= src;
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+</script>
 
 																										
 {% endif %}
