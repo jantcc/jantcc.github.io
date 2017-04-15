@@ -10,6 +10,7 @@
   {% include '_partials/head.swig' %}
   <title>{% block title %}{% endblock %}</title>
   <meta name="baidu-site-verification" content="Lc9OrpdXiM" />
+  <meta baidu-gxt-verify-token="b4c65815fced37d0fce6a59dc42f50f6">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="{{ page.lang || page.language || config.language }}">
