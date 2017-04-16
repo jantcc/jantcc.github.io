@@ -11,7 +11,7 @@ keywords: "Java, Life"
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
 # Set rss to specific value if you have burned your feed already.
-rss:
+rss: /atom.xml
 
 # Specify the date when the site was setup
 #since: 2017
@@ -198,11 +198,11 @@ sidebar:
 
 
 # Blog rolls
-#links_title: Links
+links_title: Links
 #links_layout: block
 #links_layout: inline
-#links:
-  #Title: http://example.com/
+links:
+  fzy-Line: https://fzy-line.github.io/
 
 
 # ---------------------------------------------------------------
