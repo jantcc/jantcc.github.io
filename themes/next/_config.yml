@@ -42,6 +42,7 @@ menu:
   categories: /categories
   tags: /tags
   about: /about
+  comment : /comment
   #sitemap: /sitemap.xml
   #commonweal: /404.html
 
@@ -62,7 +63,7 @@ menu_icons:
   archives: archive
   sitemap: sitemap
   commonweal: heartbeat
-
+  comment: comment
 
 
 
