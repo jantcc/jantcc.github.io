@@ -10,3 +10,5 @@ Disallow: /vendors/
 Disallow: /fancybox/
 Sitemap: http://jantc.cn/sitemap.xml
 Sitemap: https://jantc.cn/sitemap.xml
+Sitemap: http://jantc.cn/baidusitemap.xml
+Sitemap: https://jantc.cn/baidusitemap.xml
