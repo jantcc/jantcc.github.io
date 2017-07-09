@@ -24,7 +24,7 @@
   <div class="{{ container_class }} {% block page_class %}{% endblock %} ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader" style="background-color: transparent!important;">
       <div class="header-inner"> {%- include '_partials/header.swig' %} </div>
     </header>
 
@@ -43,7 +43,7 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer id="footer" class="footer" style="background-color: transparent!important;">
       <div class="footer-inner">
         {% include '_partials/footer.swig' %}
         {% include '_third-party/analytics/busuanzi-counter.swig' %}
