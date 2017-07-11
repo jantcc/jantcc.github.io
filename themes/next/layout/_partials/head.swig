@@ -6,7 +6,16 @@
 {# #238, Disable Baidu tranformation #}
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-
+<script>
+    (function(){
+        if('{{ page.password }}'){
+            if (prompt('请输入文章密码') !== '{{ page.password }}'){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
 <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 
