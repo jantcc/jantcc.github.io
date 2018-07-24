@@ -7,7 +7,7 @@ title: 周建川的随想录
 subtitle: 因为懂得，所以慈悲。
 description: Humble to the dust and then out of the flowers
 author: Jant
-language: default
+language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -75,5 +75,5 @@ baidusitemap:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git   
-  repository: https://github.com/jantcc/jantcc.github.io.git
+  repository: git@github.com:jantcc/jantcc.github.io.git
   branch: master
