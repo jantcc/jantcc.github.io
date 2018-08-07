@@ -1,7 +1,7 @@
 ---
 title: MyBatis拦截器分页原理及PageHelper分页插件教学
 date: 2017-04-15 17:49:03
-tags: [mabatis,数据库]
+tags: [mybatis,数据库]
 categories: java
 ---
 闲来无事，特地整理了一下MyBatis拦截器实现分页的原理。
