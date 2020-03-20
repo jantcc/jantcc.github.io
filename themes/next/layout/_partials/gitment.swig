@@ -1,5 +1,6 @@
 <script>
 var gitment = new Gitment({
+  id: decodeURI(window.location.pathname),
   owner: 'jantcc',
   repo: 'blogcomments',
   oauth: {
