@@ -1,0 +1,10 @@
+<h1 id="Donate-Page-simple"><a href="#Donate-Page-simple" class="headerlink" title="Donate-Page simple"></a>Donate-Page simple</h1><video class="share-video" id="share-video" poster="https://thumbs.gfycat.com/TatteredAlarmingCopperhead-poster.jpg" autoplay="" muted="" loop=""><source id="webmSource" src="https://zippy.gfycat.com/TatteredAlarmingCopperhead.webm" type="video/webm"><source id="mp4Source" src="https://zippy.gfycat.com/TatteredAlarmingCopperhead.mp4" type="video/mp4"><img title="Sorry, your browser doesn't support HTML5 video." src="https://i.imgur.com/yNz5vJc.gif"></video>
+
+<h4 id="直接-Fork-之后需要修改以下内容为你的账户"><a href="#直接-Fork-之后需要修改以下内容为你的账户" class="headerlink" title="直接 Fork 之后需要修改以下内容为你的账户"></a>直接 Fork 之后需要修改以下内容为你的账户</h4><pre><code>/script.js:4-6 对应账户的二维码路径
+
+/index.html:28 PayPal.me 改为现在收款页面，这样可以删除原来的按钮方式了。
+
+/index.html:37 `&lt;input id=&quot;btc-key&quot; type=&quot;text&quot; value=&quot;比特币账号&quot; readonly=&quot;readonly&quot;&gt;`
+</code></pre><h4 id="针对不同项目可以直接在-URL-加入项目参数和金额，不过仅仅作用于-PayPal-方式"><a href="#针对不同项目可以直接在-URL-加入项目参数和金额，不过仅仅作用于-PayPal-方式" class="headerlink" title="针对不同项目可以直接在 URL 加入项目参数和金额，不过仅仅作用于 PayPal 方式."></a>针对不同项目可以直接在 URL 加入项目参数和金额，不过仅仅作用于 PayPal 方式.</h4><p><code>https://kaiyuan.github.io/donate-page/simple/?item=&#39;donate-page&amp;price=2&#39;</code></p>
+<h4 id="使用-iframe-嵌入页面的代码，高度至少-240px，宽度至少-310px！"><a href="#使用-iframe-嵌入页面的代码，高度至少-240px，宽度至少-310px！" class="headerlink" title="使用 iframe 嵌入页面的代码，高度至少 240px，宽度至少 310px！"></a>使用 <code>iframe</code> 嵌入页面的代码，高度至少 <code>240px</code>，宽度至少 <code>310px</code>！</h4><pre><code>&lt;iframe src=&quot;https://kaiyuan.github.io/donate-page/simple/&quot; style=&quot;overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;&quot;  frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;
+</code></pre><h3 id="License"><a href="#License" class="headerlink" title="License"></a>License</h3><p>Released under the MIT license.</p>

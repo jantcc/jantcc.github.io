@@ -1,0 +1,1138 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Java, Life">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="周建川的随想录" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="前言在经受CSDN辣眼睛的排版后，就一直在想要是能有一个自己的博客就好了。 大多数人会经历以下三个阶段 : （1）第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。 （2）第二阶段，发现免费的空间太多限制，不能让我们肆意的发挥，于是选择购买域名和空间建站 （3）第三阶段，觉得独立博客管理起来又太麻烦，最好在保留控制权的前提下，让别人管，自己只写。 我最开始也是在CSDN上写自己的文章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建站分享之Github Pages + Hexo搭建博客 (一)">
+<meta property="og:url" content="http://jantc.cn/2017/04/16/建站分享之Github Pages + Hexo搭建博客 (一)/index.html">
+<meta property="og:site_name" content="周建川的随想录">
+<meta property="og:description" content="前言在经受CSDN辣眼睛的排版后，就一直在想要是能有一个自己的博客就好了。 大多数人会经历以下三个阶段 : （1）第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。 （2）第二阶段，发现免费的空间太多限制，不能让我们肆意的发挥，于是选择购买域名和空间建站 （3）第三阶段，觉得独立博客管理起来又太麻烦，最好在保留控制权的前提下，让别人管，自己只写。 我最开始也是在CSDN上写自己的文章">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ooes75dyq.bkt.clouddn.com/creatblog/1.jpg">
+<meta property="og:image" content="http://ooes75dyq.bkt.clouddn.com/creatblog/2.jpg">
+<meta property="og:image" content="http://ooes75dyq.bkt.clouddn.com/creatblog/3.jpg">
+<meta property="og:image" content="http://ooes75dyq.bkt.clouddn.com/creatblog/4.jpg">
+<meta property="og:image" content="http://ohe7ixo05.bkt.clouddn.com/2016/11/30-7.png">
+<meta property="og:updated_time" content="2020-03-23T09:10:50.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="建站分享之Github Pages + Hexo搭建博客 (一)">
+<meta name="twitter:description" content="前言在经受CSDN辣眼睛的排版后，就一直在想要是能有一个自己的博客就好了。 大多数人会经历以下三个阶段 : （1）第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。 （2）第二阶段，发现免费的空间太多限制，不能让我们肆意的发挥，于是选择购买域名和空间建站 （3）第三阶段，觉得独立博客管理起来又太麻烦，最好在保留控制权的前提下，让别人管，自己只写。 我最开始也是在CSDN上写自己的文章">
+<meta name="twitter:image" content="http://ooes75dyq.bkt.clouddn.com/creatblog/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jantc.cn/2017/04/16/建站分享之Github Pages + Hexo搭建博客 (一)/">
+
+
+
+
+
+  <title> 建站分享之Github Pages + Hexo搭建博客 (一) | 周建川的随想录 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8a899aae0be6ea6fba5a999c74604394";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader" style="background-color: transparent!important;">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周建川的随想录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">因为懂得，所以慈悲。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-comment">
+          <a href="/comment" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://jantc.cn/2017/04/16/建站分享之Github Pages + Hexo搭建博客 (一)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jant">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周建川的随想录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                建站分享之Github Pages + Hexo搭建博客 (一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-16T17:12:12+08:00">
+                2017-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/建站分享/" itemprop="url" rel="index">
+                    <span itemprop="name">建站分享</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>times
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在经受CSDN辣眼睛的排版后，就一直在想要是能有一个自己的博客就好了。</p>
+<p>大多数人会经历以下三个阶段 :</p>
+<p>（1）第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
+<p>（2）第二阶段，发现免费的空间太多限制，不能让我们肆意的发挥，于是选择购买域名和空间建站</p>
+<p>（3）第三阶段，觉得独立博客管理起来又太麻烦，最好在保留控制权的前提下，让别人管，自己只写。</p>
+<p>我最开始也是在CSDN上写自己的文章，现在整体搬迁到Github 上来，中途遇到很多难题，不断Google，不断学习，我想我大概就是这么一个爱折腾的人吧。</p>
+<a id="more"></a>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>首先介绍一下Github Pages ：它提供了300M的免费空间，并且稳定可靠。</p>
+<p>在这样一个前提下，我们自然而且就能够放心的将blog搭建在上面。</p>
+<p>作为一个程序员，应该学会使用Git来管理项目，同时应当学会在github上寻找我们需要的资源fork –&gt;forking</p>
+<font color="red"><strong>Github是趋势，做it的人应今早融入这个大环境</strong></font>
+
+<h4 id="Github注册与配置说明"><a href="#Github注册与配置说明" class="headerlink" title="Github注册与配置说明"></a>Github注册与配置说明</h4><h5 id="新建一个仓库"><a href="#新建一个仓库" class="headerlink" title="新建一个仓库"></a>新建一个仓库</h5><p><img src="http://ooes75dyq.bkt.clouddn.com/creatblog/1.jpg" alt="enter image description here"></p>
+<p>yourusername.github.io 以后就是你的域名了。</p>
+<p>建好后进入你的仓库，点击settings<br><img src="http://ooes75dyq.bkt.clouddn.com/creatblog/2.jpg" alt="enter image description here"></p>
+<p>找到Github Pages栏目，点击选择一个主题<br><img src="http://ooes75dyq.bkt.clouddn.com/creatblog/3.jpg" alt="enter image description here"></p>
+<p>选择主题<br><img src="http://ooes75dyq.bkt.clouddn.com/creatblog/4.jpg" alt="enter image description here"></p>
+<p>主题生效后，我们的github pages也就设置完毕了，然后你现在在地址栏访问yourusername.github.io就可以测试刚才建好的站点。</p>
+<h4 id="下载Git-、Nodes-js"><a href="#下载Git-、Nodes-js" class="headerlink" title="下载Git 、Nodes.js"></a>下载Git 、Nodes.js</h4><h5 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h5><p>选择你自己的操作系统版本下载 <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git下载地址</a> </p>
+<p>安装并配置环境变量（你的Git安装目录）</p>
+<p>可以用下面的命令测试Git是否安装成功：</p>
+<p><code>git --version</code> </p>
+<p>添加SSH-key到刚才创建的仓库中，这样才能够提交代码到仓库。</p>
+<p>（1）先检查是否安装有SSH KEY</p>
+<p>打开git bash，输入cd ~/.ssh 或cd .ssh</p>
+<p>如果没有则提示： No such file or directory</p>
+<p>如果有则进入~/.ssh路径下（ls查看当前路径文件，rm * 删除所有文件）</p>
+<p>（2）配置SSH KEY</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~  #保证当前路径在”~”下</span><br><span class="line">$ ssh-keygen -t rsa -C "这里填写你的邮箱地址"</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/c/Users/xxxx_000/.ssh/id_rsa):   #不填直接回车</span><br><span class="line">Enter passphrase (empty for no passphrase):   #输入密码（可以为空）</span><br><span class="line">Enter same passphrase again:   #再次确认密码（可以为空）</span><br><span class="line">Your identification has been saved in /c/Users/xxxx_000/.ssh/id_rsa.   #生成的密钥</span><br><span class="line">Your public key has been saved in /c/Users/xxxx_000/.ssh/id_rsa.pub.  #生成的公钥</span><br><span class="line">The key fingerprint is:</span><br><span class="line">e3:51:33:xx:xx:xx:xx:xxx:61:28:83:e2:81 xxxxxx@yy.com</span><br></pre></td></tr></table></figure>
+<p>到这里SSH KEY 已经生成完毕，其存放路径为：c:/Users/你电脑的用户名/.ssh/下。</p>
+<p>（3）在Github 配置SSH-KEY</p>
+<p>登录GitHub系统；点击右上角账号头像的“▼”→Settings→SSH kyes→Add SSH key，Title自定义，复制id_rsa.pub的公钥内容到GitHub中Add an SSH key的key输入框，最后“Add Key”。</p>
+<p>（4）配置本地账户<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name “your_username”  #设置用户名</span><br><span class="line">$ git config --global user.email “your_registered_github_Email” </span><br><span class="line">#设置邮箱地址(建议用注册giuhub的邮箱)</span><br></pre></td></tr></table></figure></p>
+<h5 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h5><p>根据电脑操作系统版本下载： <a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Node.js下载地址</a></p>
+<p>测试是否安装成功</p>
+<p><code>node -v</code> 如果提示没有找到此命令就去配置node.js的环境变量</p>
+<h5 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h5><p>hexo是基于node.js的静态博客，官网也是放在Github上面的。ps:不用单独下载hexo</p>
+<h5 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h5><p>选择一个文件夹，用来存放你的博客所有文件。在此文件夹下右键打开Git Bash输入以下命令进行安装</p>
+<p><code>$ npm install -g hexo-cli</code></p>
+<p>初始化hexo</p>
+<p><code>$ hexo init hexo</code></p>
+<p>这里会将Github上的hexo项目clone下来，得到hexo文件夹。</p>
+<p>初始化成功后会在最后打印一行：INFO Start blogging with Hexo!</p>
+<h5 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a>配置hexo</h5><p>（1）进入到hexo文件 （2）安装依赖文件 （3）部署形成文件<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd hexo</span><br><span class="line">$ npm install</span><br><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></p>
+<p>（4）本地测试</p>
+<p><code>$ hexo server</code><br>在浏览器输入：<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 即可访问到我们搭建好的hexo站点。<br><img src="http://ohe7ixo05.bkt.clouddn.com/2016/11/30-7.png" alt="enter image description here"></p>
+<h4 id="重点"><a href="#重点" class="headerlink" title="重点"></a><font color="red">重点</font></h4><h5 id="将本地hexo项目托管到Github"><a href="#将本地hexo项目托管到Github" class="headerlink" title="将本地hexo项目托管到Github"></a>将本地hexo项目托管到Github</h5><p>修改全局配置文件_config.yml</p>
+<p>说明： hexo文件夹下一个_config.yml，我们称之为全局配置文件，在每个主题文件夹内还会有一个_config.yml文件，我们称之为主题配置文件。</p>
+<p>用Editplus或者notepad++编辑器打开hexo文件夹下的_config.yml文件。</p>
+<p>注意：配置文件中每个字段后面的冒号是英文格式的，且在其后要加一个空格再写值</p>
+<p>一定记住这是规范！！！  <font color="red">key:空格value</font></p>
+<p>编辑最后面的deploy属性，加入代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git   </span><br><span class="line">  repository: https:<span class="comment">//github.com/你的Github用户名/你的Github用户名.github.io.git</span></span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></p>
+<p><font color="red">注意一定要按照这个格式，deploy下面三个属性前面有2个空格<font></font></font></p>
+<h5 id="安装hexo-deployer-git插件"><a href="#安装hexo-deployer-git插件" class="headerlink" title="安装hexo-deployer-git插件"></a>安装hexo-deployer-git插件</h5><p>安装这个插件可以快速帮助我们把代码托管到github</p>
+<p><code>$ npm install hexo-deployer-git --save</code></p>
+<p>部署到Github上的方法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean  #清除缓存 网页正常情况下可以忽略此条命令</span><br><span class="line">$ hexo generator  #生成静态页面至public目录</span><br><span class="line">$ hexo deploy  #将.deploy目录部署到GitHub</span><br></pre></td></tr></table></figure>
+<p>部署成功后会显示<br>INFO  Deploy done: git</p>
+<p>到这里恭喜你，你的hexo项目基本上就搭建成功了。通过yourusername.github.io就可以访问hexo项目了。</p>
+<p>下篇文章讲解hexo主题的配置。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/16/建站分享之添加留言板/" rel="next" title="建站分享之添加留言板">
+                <i class="fa fa-chevron-left"></i> 建站分享之添加留言板
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/16/建站分享之Github Pages + Hexo搭建博客 (二)/" rel="prev" title="建站分享之Github Pages + Hexo搭建博客 (二)">
+                建站分享之Github Pages + Hexo搭建博客 (二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":["qzone","tsina","weixin","douban","sqq"],"bdPic":"","bdStyle":"2","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"left","bdTop":"250"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+    <script>
+var gitment = new Gitment({
+  id: decodeURI(window.location.pathname),
+  owner: 'jantcc',
+  repo: 'blogcomments',
+  oauth: {
+    client_id: 'ab9dca6cbab84945addc',
+    client_secret: '9f2bd74ba87092340af4ae7f4512d3a2babe94cb',
+  },
+})
+gitment.render('comments')
+</script>
+
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Jant">
+          <p class="site-author-name" itemprop="name">Jant</p>
+           
+              <p class="site-description motion-element" itemprop="description">Humble to the dust and then out of the flowers</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/jantcc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://fzy-line.github.io/" title="fzy-Line" target="_blank">fzy-Line</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.alkalixin.cn/" title="Alkali" target="_blank">Alkali</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://gao4.pw" title="沫雨" target="_blank">沫雨</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.mana.love" title="喵喵清吟" target="_blank">喵喵清吟</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <script type="text/javascript">
+var thisURL = document.URL;
+if(thisURL== "https://jantc.cn/about/"){
+var z1 = document.getElementsByClassName("content-wrap")[0];
+var div = document.createElement("div");
+div.setAttribute("id", "newDiv1");
+var div2 = "<hr><iframe src='https://jantc.cn/simple/' style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;'  frameborder='0' scrolling='no'></iframe>";
+div.innerHTML = div2;
+z1.appendChild(div);
+}
+var z = document.getElementById("posts").tagName;
+if(z != "SECTION"){
+var x = document.getElementsByClassName("post-body");
+var parent = document.getElementsByClassName("post post-type-normal")[0];
+var el = x[0];
+var div = document.createElement("div");
+div.setAttribute("id", "newDiv");
+var div2 = "<hr><iframe src='https://jantc.cn/simple/' style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;'  frameborder='0' scrolling='no'></iframe>";
+div.innerHTML = div2;
+insertAfter(div,el.nextSibling);
+}
+function insertAfter(newElement,targetElement) {  
+  var parent = targetElement.parentNode;  
+  if (parent.lastChild == targetElement) {  
+// ������Ľڵ���Ŀ��Ԫ�أ���ֱ����ӡ���ΪĬ�������  
+  parent.appendChild(newElement);  
+  } else {  
+  parent.insertBefore(newElement,targetElement.nextSibling);  
+//������ǣ��������Ŀ��Ԫ�ص���һ���ֵܽڵ� ��ǰ�档Ҳ����Ŀ��Ԫ�صĺ��档  
+  }  
+}  
+</script>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Github注册与配置说明"><span class="nav-number">2.1.</span> <span class="nav-text">Github注册与配置说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#新建一个仓库"><span class="nav-number">2.1.1.</span> <span class="nav-text">新建一个仓库</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载Git-、Nodes-js"><span class="nav-number">2.2.</span> <span class="nav-text">下载Git 、Nodes.js</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Git"><span class="nav-number">2.2.1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Node-js"><span class="nav-number">2.2.2.</span> <span class="nav-text">Node.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Hexo"><span class="nav-number">2.2.3.</span> <span class="nav-text">Hexo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.2.4.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置hexo"><span class="nav-number">2.2.5.</span> <span class="nav-text">配置hexo</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重点"><span class="nav-number">2.3.</span> <span class="nav-text">重点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将本地hexo项目托管到Github"><span class="nav-number">2.3.1.</span> <span class="nav-text">将本地hexo项目托管到Github</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装hexo-deployer-git插件"><span class="nav-number">2.3.2.</span> <span class="nav-text">安装hexo-deployer-git插件</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer" style="background-color: transparent!important;">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jant</span>
+</div>
+
+
+<div>
+	技术小站稳定运行中~~
+</div>
+
+<!-- <div class="theme-info"> -->
+<!--   主题 - -->
+<!-- 	半透明个性主题-->
+<!--  </div> -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+																										
+<script type="text/javascript">
+	if(!detectmob()){
+		loadJs("//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js");
+	}
+	function detectmob() {  
+                if( navigator.userAgent.match(/Android/i)  
+                || navigator.userAgent.match(/webOS/i)  
+                || navigator.userAgent.match(/iPhone/i)  
+                || navigator.userAgent.match(/iPad/i)  
+                || navigator.userAgent.match(/iPod/i)  
+                || navigator.userAgent.match(/BlackBerry/i)  
+                || navigator.userAgent.match(/Windows Phone/i)  
+                ){  
+                    return true;  
+                }  
+                else {  
+                    return false;  
+                }  
+            }  
+	function loadJs(src) {
+	var script = document.createElement('script');
+	script.type="text/javascript";
+	script.language = 'javascript';
+	script.src= src;
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+</script>
+
+																										
+
+</body>
+</html>

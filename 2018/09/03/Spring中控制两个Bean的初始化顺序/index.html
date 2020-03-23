@@ -1,0 +1,1115 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Spring,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="周建川的随想录" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="开发过程中有这样一个场景，2个 bean 初始化逻辑中有依赖关系，需要控制二者的初始化顺序。实现方式可以有多种，本文结合目前对 Spring 的理解，尝试列出几种思路。">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring中控制两个Bean的初始化顺序">
+<meta property="og:url" content="http://jantc.cn/2018/09/03/Spring中控制两个Bean的初始化顺序/index.html">
+<meta property="og:site_name" content="周建川的随想录">
+<meta property="og:description" content="开发过程中有这样一个场景，2个 bean 初始化逻辑中有依赖关系，需要控制二者的初始化顺序。实现方式可以有多种，本文结合目前对 Spring 的理解，尝试列出几种思路。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ooes75dyq.bkt.clouddn.com/spring01.jpg">
+<meta property="og:image" content="http://ooes75dyq.bkt.clouddn.com/spring02.png">
+<meta property="og:updated_time" content="2020-03-23T09:10:50.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring中控制两个Bean的初始化顺序">
+<meta name="twitter:description" content="开发过程中有这样一个场景，2个 bean 初始化逻辑中有依赖关系，需要控制二者的初始化顺序。实现方式可以有多种，本文结合目前对 Spring 的理解，尝试列出几种思路。">
+<meta name="twitter:image" content="http://ooes75dyq.bkt.clouddn.com/spring01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://jantc.cn/2018/09/03/Spring中控制两个Bean的初始化顺序/">
+
+
+
+
+
+  <title> Spring中控制两个Bean的初始化顺序 | 周建川的随想录 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8a899aae0be6ea6fba5a999c74604394";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader" style="background-color: transparent!important;">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周建川的随想录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">因为懂得，所以慈悲。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-comment">
+          <a href="/comment" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://jantc.cn/2018/09/03/Spring中控制两个Bean的初始化顺序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jant">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周建川的随想录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring中控制两个Bean的初始化顺序
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:46:02+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>times
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>开发过程中有这样一个场景，2个 bean 初始化逻辑中有依赖关系，需要控制二者的初始化顺序。实现方式可以有多种，本文结合目前对 Spring 的理解，尝试列出几种思路。</p>
+<a id="more"></a>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>假设A，B两个 bean 都需要在初始化的时候从本地磁盘读取文件，其中B加载的文件，依赖A中加载的全局配置文件中配置的路径，所以需要A先于B初始化，此外A中的配置改变后也需要触发B的重新加载逻辑，所以A，B需要注入彼此。<br>对于下面的模型，问题简化为：我们需要initA()先于initB()得到执行。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> B b;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"A construct"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        initA();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"A init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span>  </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> A a;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">B</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"B construct"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        initB();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initB</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"B init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="方案一：立Flag"><a href="#方案一：立Flag" class="headerlink" title="方案一：立Flag"></a>方案一：立Flag</h3><p>我们可以在业务层自己控制A，B的初始化顺序，在A中设置一个“是否初始化的”标记，B初始化前检测A是否得以初始化，如果没有则调用A的初始化方法，所谓的check-and-act。对于上述模型，实现如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> initialized;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> B b;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"A construct"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        initA();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isInitialized</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> initialized;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!isInitialized()) &#123;</span><br><span class="line">            System.out.println(<span class="string">"A init"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        initialized = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> A a;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">B</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"B construct"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        initB();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!a.isInitialized()) &#123;</span><br><span class="line">            a.initA();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"B init"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>执行结果:<br>A construct<br>B construct<br>A init<br>B init</p>
+</blockquote>
+<p>这种立flag的方法好处是可以做到lazy initialization，但是如果类似逻辑很多的话代码中到处充斥着类似代码，不优雅，所以考虑是否框架本身就可以满足我们的需要。</p>
+<h3 id="方案二：使用DependsOn"><a href="#方案二：使用DependsOn" class="headerlink" title="方案二：使用DependsOn"></a>方案二：使用DependsOn</h3><p>Spring 中的 DependsOn 注解可以保证被依赖的bean先于当前bean被容器创建，但是如果不理解Spring中bean加载过程会对 DependsOn 有误解，自己也确实踩过坑。对于上述模型，如果在B上加上注解@DependsOn({“a”})，得到的执行结果是：</p>
+<blockquote>
+<p>A construct<br>B construct<br>B init<br>A init</p>
+</blockquote>
+<p>在这里问题的关键是：bean属性的注入是在初始化方法调用之前<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码位置：AbstractAutowireCapableBeanFactory.doCreateBean</span></span><br><span class="line"><span class="comment">// 填充 bean 的各个属性，包括依赖注入</span></span><br><span class="line">populateBean(beanName, mbd, instanceWrapper);</span><br><span class="line"><span class="keyword">if</span> (exposedObject != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// 调用初始化方法，如果是 InitializingBean 则先调用 afterPropertiesSet 然后调用自定义的init-method 方法</span></span><br><span class="line">    exposedObject = initializeBean(beanName, exposedObject, mbd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结合本例，发生的实际情况是，因为出现了循环依赖，A依赖B，加载B，B依赖A，所以得到了一个提前暴露的A，然后调用B的初始化方法，接着回到A的初始化方法。具体源码分析过程如下：<br>ApplicationContext 在 refresh 过程中的最后会加载所有的 no-lazy 单例。<br><img src="http://ooes75dyq.bkt.clouddn.com/spring01.jpg" alt="加载顺序"><br>本例中，先加载的bean A，最终通过无参构造器构造，然后，继续属性填充（populateBean），发现需要注入 bean B。所以转而加载 bean B（递归调用 getBean()）。此时发现 bean B 需要 DependsOn(“a”)，在保存依赖关系（为了防止循环 depends）后，调用 getBean(“a”)，此时会得到提前暴露的 bean A ，所以继续 B 的加载，流程为： 初始化策略构造实例 -&gt; 属性填充（同样会注入提前暴露的 bean A ） -&gt; 调用初始化方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码位置：AbstractBeanFactory.doGetBean</span></span><br><span class="line"><span class="comment">// Guarantee initialization of beans that the current bean depends on. 实例化依赖的 bean</span></span><br><span class="line">        String[] dependsOn = mbd.getDependsOn();</span><br><span class="line">        <span class="keyword">if</span> (dependsOn != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (String dep : dependsOn) &#123;</span><br><span class="line">                <span class="keyword">if</span> (isDependent(beanName, dep)) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> BeanCreationException(mbd.getResourceDescription(),</span><br><span class="line">                            beanName, <span class="string">"Circular depends-on relationship between '"</span></span><br><span class="line">                            + beanName + <span class="string">"' and '"</span> + dep + <span class="string">"'"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                registerDependentBean(dep, beanName); <span class="comment">// 缓存 bean 依赖的关系</span></span><br><span class="line">                getBean(dep);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>得到提前暴露的 bean A的过程为：<br><img src="http://ooes75dyq.bkt.clouddn.com/spring02.png" alt="源码"></p>
+<p>此时此刻，bean A 的属性注入完成了， 返回到调用初始化方法，所以表现的行为是：构造A -&gt; 构造B -&gt; B初始化 -&gt; A初始化。<br>DependsOn只是保证的被依赖的bean先于当前bean被实例化，被创建，所以如果要采用这种方式实现bean初始化顺序的控制，那么可以把初始化逻辑放在构造函数中，但是复杂耗时的逻辑放在构造器中是不合适的，会影响系统启动速度。</p>
+<h3 id="方案三：容器加载bean之前"><a href="#方案三：容器加载bean之前" class="headerlink" title="方案三：容器加载bean之前"></a>方案三：容器加载bean之前</h3><p>Spring 框架中很多地方都为我们提供了扩展点，很好的体现了开闭原则（OCP）。其中 BeanFactoryPostProcessor 可以允许我们在容器加载任何bean之前修改应用上下文中的BeanDefinition（从XML配置文件或者配置类中解析得到的bean信息，用于后续实例化bean）。<br>在本例中，就可以把A的初始化逻辑放在一个 BeanFactoryPostProcessor 中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ABeanFactoryPostProcessor</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory configurableListableBeanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        A.initA();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行效果：</p>
+<blockquote>
+<p>A init<br>A construct<br>B construct<br>B init</p>
+</blockquote>
+<p>这种方式把A中的初始化逻辑放到了加载bean之前，很适合加载系统全局配置，但是这种方式中初始化逻辑不能依赖bean的状态。</p>
+<h3 id="方案四：事件监听器的有序性"><a href="#方案四：事件监听器的有序性" class="headerlink" title="方案四：事件监听器的有序性"></a>方案四：事件监听器的有序性</h3><p>Spring 中的 Ordered 也是一个很重要的组件，很多逻辑中都会判断对象是否实现了 Ordered 接口，如果实现了就会先进行排序操作。比如在事件发布的时候，对获取到的 ApplicationListener 会先进行排序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码位置：AbstractApplicationEventMulticaster.ListenerRetriever.getApplicationListeners()</span></span><br><span class="line"><span class="keyword">public</span> Collection&lt;ApplicationListener&lt;?&gt;&gt; getApplicationListeners() &#123;</span><br><span class="line">        LinkedList&lt;ApplicationListener&lt;?&gt;&gt; allListeners = <span class="keyword">new</span> LinkedList&lt;ApplicationListener&lt;?&gt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (ApplicationListener&lt;?&gt; listener : <span class="keyword">this</span>.applicationListeners) &#123;</span><br><span class="line">            allListeners.add(listener);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.applicationListenerBeans.isEmpty()) &#123;</span><br><span class="line">            BeanFactory beanFactory = getBeanFactory();</span><br><span class="line">            <span class="keyword">for</span> (String listenerBeanName : <span class="keyword">this</span>.applicationListenerBeans) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    ApplicationListener&lt;?&gt; listener = beanFactory.getBean(listenerBeanName, ApplicationListener<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">this</span>.preFiltered || !allListeners.contains(listener)) &#123;</span><br><span class="line">                        allListeners.add(listener);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (NoSuchBeanDefinitionException ex) &#123;</span><br><span class="line">                    <span class="comment">// Singleton listener instance (without backing bean definition) disappeared -</span></span><br><span class="line">                    <span class="comment">// probably in the middle of the destruction phase</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        AnnotationAwareOrderComparator.sort(allListeners); <span class="comment">// 排序</span></span><br><span class="line">        <span class="keyword">return</span> allListeners;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以可以利用事件监听器在处理事件时的有序性，在应用上下文 refresh 完成后，分别实现A，B中对应的初始化逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationListenerA</span> <span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">ApplicationContextEvent</span>&gt;, <span class="title">Ordered</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(ApplicationContextEvent event)</span> </span>&#123;</span><br><span class="line">        initA();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Ordered.HIGHEST_PRECEDENCE; <span class="comment">// 比 ApplicationListenerB 优先级高</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"A init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationListenerB</span> <span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">ApplicationContextEvent</span>&gt;, <span class="title">Ordered</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(ApplicationContextEvent event)</span> </span>&#123;</span><br><span class="line">        initB();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Ordered.HIGHEST_PRECEDENCE -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"B init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行效果：</p>
+<blockquote>
+<p>A construct<br>B construct<br>A init<br>B init</p>
+</blockquote>
+<p>这种方式就是站在事件响应的角度，上下文加载完成后，先实现A逻辑，然后实现B逻辑。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在平时的开发中使用的可能都是一个语言，一个框架的冰山一角，随着对语言，对框架的不断深入，你会发现更多的可能。本文只是基于目前对于 Spring 框架的理解做出的尝试，解决一个问题可能有多种方式，其中必然存在权衡选择，取决于对业务对技术的理解。</p>
+<p>本文出处：<a href="https://sq.163yun.com/blog/article/191350999869239296" target="_blank" rel="noopener">https://sq.163yun.com/blog/article/191350999869239296</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/09/单例设计模式/" rel="next" title="单例设计模式">
+                <i class="fa fa-chevron-left"></i> 单例设计模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/04/JVM垃圾回收就是这么简单/" rel="prev" title="JVM垃圾回收就是这么简单">
+                JVM垃圾回收就是这么简单 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":["qzone","tsina","weixin","douban","sqq"],"bdPic":"","bdStyle":"2","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"left","bdTop":"250"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+    <script>
+var gitment = new Gitment({
+  id: decodeURI(window.location.pathname),
+  owner: 'jantcc',
+  repo: 'blogcomments',
+  oauth: {
+    client_id: 'ab9dca6cbab84945addc',
+    client_secret: '9f2bd74ba87092340af4ae7f4512d3a2babe94cb',
+  },
+})
+gitment.render('comments')
+</script>
+
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Jant">
+          <p class="site-author-name" itemprop="name">Jant</p>
+           
+              <p class="site-description motion-element" itemprop="description">Humble to the dust and then out of the flowers</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/jantcc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://fzy-line.github.io/" title="fzy-Line" target="_blank">fzy-Line</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.alkalixin.cn/" title="Alkali" target="_blank">Alkali</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://gao4.pw" title="沫雨" target="_blank">沫雨</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.mana.love" title="喵喵清吟" target="_blank">喵喵清吟</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <script type="text/javascript">
+var thisURL = document.URL;
+if(thisURL== "https://jantc.cn/about/"){
+var z1 = document.getElementsByClassName("content-wrap")[0];
+var div = document.createElement("div");
+div.setAttribute("id", "newDiv1");
+var div2 = "<hr><iframe src='https://jantc.cn/simple/' style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;'  frameborder='0' scrolling='no'></iframe>";
+div.innerHTML = div2;
+z1.appendChild(div);
+}
+var z = document.getElementById("posts").tagName;
+if(z != "SECTION"){
+var x = document.getElementsByClassName("post-body");
+var parent = document.getElementsByClassName("post post-type-normal")[0];
+var el = x[0];
+var div = document.createElement("div");
+div.setAttribute("id", "newDiv");
+var div2 = "<hr><iframe src='https://jantc.cn/simple/' style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;'  frameborder='0' scrolling='no'></iframe>";
+div.innerHTML = div2;
+insertAfter(div,el.nextSibling);
+}
+function insertAfter(newElement,targetElement) {  
+  var parent = targetElement.parentNode;  
+  if (parent.lastChild == targetElement) {  
+// ������Ľڵ���Ŀ��Ԫ�أ���ֱ����ӡ���ΪĬ�������  
+  parent.appendChild(newElement);  
+  } else {  
+  parent.insertBefore(newElement,targetElement.nextSibling);  
+//������ǣ��������Ŀ��Ԫ�ص���һ���ֵܽڵ� ��ǰ�档Ҳ����Ŀ��Ԫ�صĺ��档  
+  }  
+}  
+</script>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案一：立Flag"><span class="nav-number">2.</span> <span class="nav-text">方案一：立Flag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案二：使用DependsOn"><span class="nav-number">3.</span> <span class="nav-text">方案二：使用DependsOn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案三：容器加载bean之前"><span class="nav-number">4.</span> <span class="nav-text">方案三：容器加载bean之前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案四：事件监听器的有序性"><span class="nav-number">5.</span> <span class="nav-text">方案四：事件监听器的有序性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer" style="background-color: transparent!important;">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jant</span>
+</div>
+
+
+<div>
+	技术小站稳定运行中~~
+</div>
+
+<!-- <div class="theme-info"> -->
+<!--   主题 - -->
+<!-- 	半透明个性主题-->
+<!--  </div> -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+																										
+<script type="text/javascript">
+	if(!detectmob()){
+		loadJs("//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js");
+	}
+	function detectmob() {  
+                if( navigator.userAgent.match(/Android/i)  
+                || navigator.userAgent.match(/webOS/i)  
+                || navigator.userAgent.match(/iPhone/i)  
+                || navigator.userAgent.match(/iPad/i)  
+                || navigator.userAgent.match(/iPod/i)  
+                || navigator.userAgent.match(/BlackBerry/i)  
+                || navigator.userAgent.match(/Windows Phone/i)  
+                ){  
+                    return true;  
+                }  
+                else {  
+                    return false;  
+                }  
+            }  
+	function loadJs(src) {
+	var script = document.createElement('script');
+	script.type="text/javascript";
+	script.language = 'javascript';
+	script.src= src;
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+</script>
+
+																										
+
+</body>
+</html>
