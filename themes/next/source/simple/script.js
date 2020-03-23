@@ -1,9 +1,9 @@
 jQuery(document).ready(function() {
 	var QRBox	=	$('#QRBox');
 	var MainBox	=	$('#MainBox');
-	var BTCQR	=	'https://github.com/jantcc/jantcc.github.io/blob/hexo/themes/next/source/simple/images/BTCQR.png';	// 二维码路径
-	var AliPayQR	=	'https://github.com/jantcc/jantcc.github.io/blob/hexo/themes/next/source/simple/images/AliPayQR.png';
-	var WeChanQR	=	'https://github.com/jantcc/jantcc.github.io/blob/hexo/themes/next/source/simple/images/WeChanQR.png';
+	var BTCQR	=	'https://blog-1253612661.cos.ap-shanghai.myqcloud.com/BTCQR.png';	// 二维码路径
+	var AliPayQR	=	'https://blog-1253612661.cos.ap-shanghai.myqcloud.com/AliPayQR.png';
+	var WeChanQR	=	'https://blog-1253612661.cos.ap-shanghai.myqcloud.com/WeChanQR.png';
 
 	
 
