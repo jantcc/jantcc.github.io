@@ -1,10 +1,10 @@
 <script type="text/javascript">
 var thisURL = document.URL;
-if(thisURL== "http://jantc.cn/about/"){
+if(thisURL== "https://jantc.cn/about/"){
 var z1 = document.getElementsByClassName("content-wrap")[0];
 var div = document.createElement("div");
 div.setAttribute("id", "newDiv1");
-var div2 = "<hr><iframe src='http://jantc.cn/simple/' style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;'  frameborder='0' scrolling='no'></iframe>";
+var div2 = "<hr><iframe src='https://jantc.cn/simple/' style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;'  frameborder='0' scrolling='no'></iframe>";
 div.innerHTML = div2;
 z1.appendChild(div);
 }
