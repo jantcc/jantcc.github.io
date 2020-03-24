@@ -31,6 +31,13 @@
     {% elseif theme.changyan.appid and theme.changyan.appkey %}
       <div id="SOHUCS"></div>
     {% endif %}
-    {% include 'gitment.swig' %}
+	<div id="vcomments"></div>
+<script>
+        new Valine({
+            el: '#vcomments',
+            appId: 'HJp02OLlTc6yk9JMO3RHj4QL-gzGzoHsz',
+            appKey: '4hUtnrgoXaxG5ns1YSrDfV8K'
+        })
+</script>	
   </div>
 {% endif %}

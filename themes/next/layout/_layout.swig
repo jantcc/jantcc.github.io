@@ -107,8 +107,7 @@
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
 </script>
-
-																										
+																		
 {% endif %}
 </body>
 </html>
