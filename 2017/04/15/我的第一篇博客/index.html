@@ -25,9 +25,7 @@
         }
     })();
 </script>
-<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-<script src="https://billts.site/js/gitment.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
 
 
 
@@ -512,19 +510,14 @@
           
   <div class="comments" id="comments">
     
-    <script>
-var gitment = new Gitment({
-  id: decodeURI(window.location.pathname),
-  owner: 'jantcc',
-  repo: 'blogcomments',
-  oauth: {
-    client_id: 'ab9dca6cbab84945addc',
-    client_secret: '9f2bd74ba87092340af4ae7f4512d3a2babe94cb',
-  },
-})
-gitment.render('comments')
-</script>
-
+	<div id="vcomments"></div>
+<script>
+        new Valine({
+            el: '#vcomments',
+            appId: 'HJp02OLlTc6yk9JMO3RHj4QL-gzGzoHsz',
+            appKey: '4hUtnrgoXaxG5ns1YSrDfV8K'
+        })
+</script>	
   </div>
 
 
@@ -1046,8 +1039,7 @@ function insertAfter(newElement,targetElement) {
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
 </script>
-
-																										
+																		
 
 </body>
 </html>
